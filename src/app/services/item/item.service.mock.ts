@@ -16,13 +16,8 @@ export class ItemServiceMock {
 
   get(): Observable<Items> {
     return this.queries.pipe(
-      map(query => ({query, items: generateItems(query.offset, query.limit)})),
-      map(({query, items}) => ({
-        refresh: query.refresh,
-        total: 10000,
-        results: items
-      })),
-      startWith({refresh: true, total: 0, results: []})      
+      map(query => generateItems(query.offset, query.limit)),
+      startWith([])
     );
   }
 }

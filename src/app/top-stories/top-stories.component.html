@@ -8,9 +8,10 @@
         <ion-refresher slot="fixed" [disabled]="!canRefresh()" (ionRefresh)="refresh($event)">
             <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
-        <app-items [items]="items.results" *ngIf="items"></app-items>
+        <app-items [items]="items$ | async"></app-items>
         <ion-infinite-scroll [disabled]="!hasNext()" (ionInfinite)="load($event)">
             <ion-infinite-scroll-content></ion-infinite-scroll-content>
         </ion-infinite-scroll>
     </ion-content>
 </ion-app>
+
