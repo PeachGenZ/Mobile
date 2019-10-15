@@ -14,12 +14,17 @@ export class ItemServiceMock {
     this.queries.next(query);
   }
 
-  get(): Observable<Items> {
-    return this.queries.pipe(
-      map(query => generateItems(query.offset, query.limit)),
-      startWith([])
-    );
-  }
+  // get(): Observable<Items> {
+  //   return this.queries.pipe(
+  //     map(query => ({query, items: generateItems(query.offset, query.limit)})),
+  //     map(({query, items}) => ({
+  //       refresh: query.refresh,
+  //       total: 10000,
+  //       results: items
+  //     })),
+  //     startWith({refresh: true, total: 0, results: []})
+  //   );
+  // }
 }
 
 export function generateItems(offset: number, limit: number): Item[] {

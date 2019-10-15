@@ -1,3 +1,3 @@
 import { Item } from './item';
 
-export type Items = Item[];
+export type Items = Item

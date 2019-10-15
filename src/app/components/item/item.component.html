@@ -1,23 +1,26 @@
-<div>
-  <h2 class="title">{{ item.title }}</h2>
-  <div>
-    <span>
-      <ion-icon name="bulb"></ion-icon>
-      {{ item.score }}
-    </span>
-    <span>
-      <ion-icon name="person"></ion-icon>
-      {{ item.by }}
-    </span>
-    <span>
-      <ion-icon name="time"></ion-icon>
-      {{ item.time | timeAgo }} ago
-    </span>
+<div *ngIf="item">
+  <h2 class="title" (click)="openPage(item.url)">{{ item.title }}</h2>
+    <div>
+      <span>
+        <ion-icon name="bulb"></ion-icon>
+        {{ item.score }}
+      </span>
+      <span>
+        <ion-icon name="person"></ion-icon>
+        {{ item.by }}
+      </span>
+      <span>
+        <ion-icon name="time"></ion-icon>
+        {{ item.time | timeAgo }} ago
+      </span>
+    </div>
+    <div>
+      <span>
+        <ion-icon name="link"></ion-icon>
+        {{ item.url }}
+      </span>
+    </div>
   </div>
-  <div>
-    <span>
-      <ion-icon name="link"></ion-icon>
-      {{ item.url }}
-    </span>
-  </div>
-</div>
+<ion-card *ngIf="!item">
+  <ion-card-header>Loading...</ion-card-header>
+</ion-card>

@@ -1,68 +1,72 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { from, Observable, Subscription } from 'rxjs';
+import { select, Store } from '@ngrx/store';
 import { Items } from '../models/items';
-import { Subscription, Observable, from } from 'rxjs';
-import { ItemService } from '../services/item/item.service';
-import { concat } from 'lodash';
+import { LoadingController, ToastController } from '@ionic/angular';
 import * as fromTopStories from './reducers';
 import * as topStoriesActions from './actions/top-stories';
-import { Store, select } from '@ngrx/store';
-import { LoadingController, ToastController } from '@ionic/angular';
-import { filter, concatMap } from 'rxjs/operators';
-
+import * as fromItems from '../reducers/items';
+import { OpenPageService } from '../services/open-page/open-page.service';
+import { concatMap, filter } from 'rxjs/operators';
 @Component({
   selector: 'app-top-stories',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './top-stories.component.html',
-  styleUrls: ['./top-stories.component.scss'],
+  styleUrls: ['./top-stories.component.scss']
 })
 export class TopStoriesComponent implements OnInit, OnDestroy {
+
   items$: Observable<Items>;
   private itemsLoading$: Observable<boolean>;
   private idsLoading$: Observable<boolean>;
-  private error$: Observable<any>;
-  private loading: HTMLIonLoadingElement;
-  private subscriptions: Subscription[];
-  private offset = 0;
-  private limit = 10;
+  private errors$: Observable<any>;
   private infiniteScrollComponent: any;
   private refresherComponent: any;
+  private loading: HTMLIonLoadingElement;
+  private subscriptions: Subscription[];
 
-
-  constructor(private store: Store<fromTopStories.State>,
-              private loadingCtrl: LoadingController,
-              private toastCtrl: ToastController) {
-
+  constructor(
+    private store: Store<fromTopStories.State>,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
+    private openPageService: OpenPageService,
+  ) {
     this.items$ = store.pipe(select(fromTopStories.getDisplayItems));
-    this.itemsLoading$ = store.pipe(select(fromTopStories.isItemLoading));
+    this.itemsLoading$ = store.pipe(select(fromItems.isItemsLoading));
     this.idsLoading$ = store.pipe(select(fromTopStories.isTopStoriesLoading));
-    this.error$ = store.pipe(select(fromTopStories.getError), filter(error => error != null));
+    this.errors$ = store.pipe(select(fromTopStories.getError), filter(error => error != null));
     this.subscriptions = [];
-    }
+  }
 
   ngOnInit() {
-    this.subscriptions.push(this.itemsLoading$.subscribe(
-      loading => {
-        if(!loading) {
+    this.subscriptions.push(this.itemsLoading$.subscribe(loading => {
+        if (!loading) {
           this.notifyScrollComplete();
         }
-    }));
+      })
+    );
     this.subscriptions.push(this.idsLoading$.pipe(concatMap(loading => {
       return loading ? from(this.showLoading()) : from(this.hideLoading());
     })).subscribe());
-    this.subscriptions.push(this.error$.pipe(concatMap(error => from(this.showError(error)))).subscribe());
+    this.subscriptions.push(this.errors$.pipe(concatMap(error => from(this.showError(error)))).subscribe());
     this.doLoad(true);
-
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.
+    unsubscribe());
   }
 
-  load(event) {
-    this.infiniteScrollComponent = event.target;    
-    this.doLoad(true);
+  openUrl(url) {
+    this.openPageService.open(url);
+  }
+  
+  load(event: Event) {
+    this.infiniteScrollComponent = event.target;
+    this.doLoad(false);
   }
 
-  refresh(event) {
+  refresh(event: Event) {
     this.refresherComponent = event.target;
     this.doLoad(true);
   }
@@ -74,7 +78,7 @@ export class TopStoriesComponent implements OnInit, OnDestroy {
       this.store.dispatch(new topStoriesActions.LoadMore());
     }
   }
-  
+
   private notifyScrollComplete(): void {
     if (this.infiniteScrollComponent) {
       this.infiniteScrollComponent.complete();
@@ -108,10 +112,9 @@ export class TopStoriesComponent implements OnInit, OnDestroy {
 
   private showError(error: any): Promise<void> {
     return this.toastCtrl.create({
-      message: `An error occured: ${error}`,
+      message: `An error occurred: ${error}`,
       duration: 3000,
       showCloseButton: true,
     }).then(toast => toast.present());
-  } 
-
+  }
 }

@@ -1,10 +1,8 @@
-import * as fromRoot from  '../../reducers';
+import * as fromRoot from '../../reducers/items';
 import * as fromTopStories from './top-stories';
 import * as fromPagination from './pagination';
-import * as fromItems from '../../reducers/items'
-import { getItemEntities, getItemState } from '../../reducers/items';
-import { ActionReducerMap, createSelector } from '@ngrx/store';
-import { createFeatureSelector } from '@ngrx/store';
+import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import { getItemEntities, getItemsError } from '../../reducers/items';
 
 export interface TopStoriesState {
     stories: fromTopStories.State;
@@ -12,7 +10,6 @@ export interface TopStoriesState {
 }
 
 export interface State extends fromRoot.State {
-    items: fromItems.State;
     topStories: TopStoriesState;
 }
 
@@ -43,26 +40,21 @@ export const getDisplayItems = createSelector(
     getItemEntities,
     getPaginationState,
     (ids, entities, pagination) => {
-        return {
-            results: ids.slice(0, pagination.offset + pagination.limit).map(id => entities[id]),
-        };
+        return ids.slice(0, pagination.offset + pagination.limit).map(id => entities[id]);
     }
 );
-
-export const isItemLoading = createSelector(
-    getItemState,
-    fromItems.getLoading,
-);
-
-export const getItemsError = createSelector(
-    getItemState,
-    fromItems.getError,
-);
-
+// export const isItemsLoading = createSelector(
+//   getItemsState,
+//   // fromItems.getLoading,
+// );
+// export const getItemsError = createSelector(
+//   getItemsState,
+//   fromItems.getError,
+// );
 export const isTopStoriesLoading = createSelector(
     getStoriesState,
     fromTopStories.getLoading,
-)
+);
 
 export const getTopStoriesError = createSelector(
     getStoriesState,

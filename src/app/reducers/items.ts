@@ -1,7 +1,7 @@
-import { Item } from '../models/item';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { ItemActions, ItemActionTypes } from '../actions/items';
-import { createFeatureSelector } from '@ngrx/store';
+import { Item } from './../models/item'
+import { ItemActions, ItemActionTypes } from './../actions/items'
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 export interface State extends EntityState<Item> {
     loading: boolean;
@@ -11,7 +11,7 @@ export interface State extends EntityState<Item> {
 export const adapter: EntityAdapter<Item> = createEntityAdapter<Item>({
     selectId: (item: Item) => item.id,
     sortComparer: false,
-}); 
+});
 
 export const initialState: State = adapter.getInitialState({
     loading: false,
@@ -49,12 +49,22 @@ export function reducer(
     }
 }
 
-export const getItemState = createFeatureSelector<State>('items');
+export const getItemsState = createFeatureSelector<State>('items');
 
 export const {
     selectEntities: getItemEntities,
-} = adapter.getSelectors(getItemState);
+} = adapter.getSelectors(getItemsState);
 
 export const getLoading = (state: State) => state.loading;
 
 export const getError = (state: State) => state.error;
+
+export const isItemsLoading = createSelector(
+    getItemsState,
+    getLoading,
+);
+
+export const getItemsError = createSelector(
+    getItemsState,
+    getError,
+);

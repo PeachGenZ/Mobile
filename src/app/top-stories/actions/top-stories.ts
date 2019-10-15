@@ -17,13 +17,11 @@ export class LoadMore implements Action {
 
 export class LoadSuccess implements Action {
   readonly type = TopStoriesActionTypes.LoadSuccess;
-
   constructor(public payload: number[]) {}
 }
 
 export class LoadFail implements Action {
   readonly type = TopStoriesActionTypes.LoadFail;
-
   constructor(public payload: any) {}
 }
 
