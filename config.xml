@@ -100,3 +100,18 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
 </widget>
+
+<!-- for iOS -->
+<feature name="SocialSharing">
+  <param name="ios-package" value="SocialSharing" />
+</feature>
+
+<!-- for Android (you will find one in res/xml) -->
+<feature name="SocialSharing">
+  <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
+</feature>
+
+<!-- for Windows Phone -->
+<feature name="SocialSharing">
+  <param name="wp-package" value="SocialSharing"/>
+</feature>
