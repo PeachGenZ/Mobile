@@ -8,13 +8,13 @@ export const environment = {
     databaseURL: 'http://hacker-news.firebaseio.com'
   },
   app_db: {
-    apiKey: 'AIzaSyCkRVGFC_Seqky9FlX437WyErJMIVVz_N8',
-    authDomain: 'myapp-hn-82de7.firebaseapp.com',
-    databaseURL: 'https://myapp-hn-82de7.firebaseio.com',
-    projectId: 'myapp-hn-82de7',
-    storageBucket: 'myapp-hn-82de7.appspot.com',
-    messagingSenderId: '941904173108',
-  }
+    apiKey: 'AIzaSyAonue_QoCXiE1w2_bK9htgaqaqSwAcNK0',
+    authDomain: 'hacker-news-client-v4.firebaseapp.com',
+    databaseURL: 'https://hacker-news-client-v4.firebaseio.com',
+    projectId: 'hacker-news-client-v4',
+    storageBucket: 'hacker-news-client-v4.appspot.com',
+    messagingSenderId: '235153545323',
+  },
 };
 /*
  * For easier debugging in development mode, you can import the following file

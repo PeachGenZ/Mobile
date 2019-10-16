@@ -24,7 +24,8 @@ import { ItemsEffects } from './effects/items';
 import { HACKER_NEWS_DB } from './hackernews-db';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-// import { FavoritesModule } from './favorites/favorites.module';
+import { FavoritesModule } from './favorites/favorites.module';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,11 +35,12 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.app_db),
     AngularFireDatabaseModule,
-    AngularFireAuthModule,
+    AngularFireAuthModule, 
+    AngularFirestoreModule,
     ServicesModule,
     AuthModule,
     TopStoriesModule,
-    // FavoritesModule,
+    FavoritesModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
       name: 'NgRx HNC DevTools',
