@@ -6,6 +6,8 @@ export interface Item {
     time: number;
     score: number;
     text?: string;
+    descendants?: number;
+    kids?: number[];
 }
 
 export function createMockItem(id: number = 1): Item {
